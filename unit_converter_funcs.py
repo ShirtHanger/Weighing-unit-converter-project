@@ -3,9 +3,7 @@
 from unit_converter_lists import *
 
 
-# I wrote this code in main, but realized at the very end I needed to
-# re-run it unless the conv_solid and conv_liquid functions wouldn't work
-# So to save space I just made a function
+# This function determines if the original unit of measurement is imperial or metric
 
 def measure_system_check(item_unit):
     """Confirms which measuring system is being used for the below three functions to work with"""
@@ -16,7 +14,7 @@ def measure_system_check(item_unit):
     return measure_system
 
 
-# Same story for this code, made this function to save space
+# This function displays all acceptable solid or liquid units of measurement for user convenience
 
 def display_units(item_type):
     """Displays tuple of acceptable inputs for user to see"""
@@ -33,11 +31,14 @@ def display_units(item_type):
 def conv_to_base(weight, item_unit, measure_system):
 
     """This will convert the input (weight user desires to convert to another value)
-    into grams, ml (Which are both the same) or solid/liquid ounce to standardize, making the next
-    conversion easier to code"""
+    into grams or ml (Which are both the same) to standardize, making the next
+    conversion easier to code. Unless the original unit was already ml or g, in that case nothing changes
+    This base will NOT be displayed to the user"""
+
+    # First check if the user's origin unit is a solid
 
     if item_unit in combined_solids:  # ... Then convert solid weight variable to grams
-        # imperial to solid ounces first
+        # If the system is imperial, will convert it to a solid ounce, then turn that ounce into grams
         if measure_system == "imperial":
             if item_unit == "pound":
                 weight *= 16
@@ -48,7 +49,7 @@ def conv_to_base(weight, item_unit, measure_system):
             # Now turn it into grams
             weight *= 28.35
 
-        # metric to grams
+        # If the system is metric, will convert that unit to grams
         else:  # It must already be metric then
             if item_unit == "milligram":
                 weight *= 0.001
@@ -57,8 +58,9 @@ def conv_to_base(weight, item_unit, measure_system):
             else:  # it's gram, no need to change
                 weight *= 1
 
+    # If this code is reached, that means the user's original unit was a liquid, not a solid
     elif item_unit in combined_liquids:  # ... Then convert liquid weight variable to milliliters
-        # imperial to liquid ounces first
+        # If the system is imperial, will convert it to a liquid ounce, then turn that ounce into milliliters
         if measure_system == "imperial":
             if item_unit == "cup":
                 weight *= 10
@@ -73,7 +75,7 @@ def conv_to_base(weight, item_unit, measure_system):
             # Now make it into ml
             weight *= 28.413
 
-    # metric to milliliters
+    # If the system is metric, will convert that unit to milliliters
         else:  # It must already be metric then
             if item_unit == "liter":
                 weight *= 1000
@@ -84,9 +86,10 @@ def conv_to_base(weight, item_unit, measure_system):
 
 def conv_liquids(weight, item_unit, measure_system):
 
-    """Unless the user asked for mls, this will convert mls into any other liquid unit"""
+    """This will convert mls into any other liquid unit.
+    Unless the original unit was already ml, in that case nothing changes"""
 
-    # mls to any imperial unit
+    # Converts a ml base to any imperial unit
     if measure_system == "imperial":
         if item_unit == "liquid ounce":
             weight /= 28.413
@@ -101,7 +104,7 @@ def conv_liquids(weight, item_unit, measure_system):
         else:  # Already in ml. No change needed
             weight /= 1
 
-    # mls to any metric unit
+    # Converts a ml base to any metric unit
     else:  # It must be metric then
         if item_unit == "liter":
             weight /= 1000
@@ -112,9 +115,10 @@ def conv_liquids(weight, item_unit, measure_system):
 
 def conv_solids(weight, item_unit, measure_system):
 
-    """Unless the user asked for grams, this will convert grams into any other solid unit"""
+    """This will convert grams into any other solid unit.
+    Unless the origin unit was already grams, in that case nothing changes"""
 
-    # grams to any imperial unit
+    # Converts a gram base to any imperial unit
     if measure_system == "imperial":
         if item_unit == "solid ounce":
             weight /= 28.35
@@ -125,7 +129,7 @@ def conv_solids(weight, item_unit, measure_system):
         else:  # Already grams. No change needed
             weight /= 1
 
-    # grams to any metric unit
+    # Converts a gram base to any metric unit
     else:  # It must be metric then
         if item_unit == "milligram":
             weight /= 0.001

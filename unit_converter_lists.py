@@ -1,6 +1,10 @@
 # All lists here for conditional statements and input validation
 
+# Used for input validation of persistent loop
 start_prompt_validation = ("yes", "no")
+
+# Used for input validation AND conditional statement branching
+accepted_inputs = ('solid', 'liquid')
 
 metric_solids = ('gram', 'milligram', 'kilogram')
 
@@ -10,7 +14,8 @@ metric_liquids = ('milliliter', 'liter')
 
 imperial_liquids = ('liquid ounce', 'cup', 'pint', 'quart', 'gallon')
 
-accepted_inputs = ('solid', 'liquid')
+# Combined lists for bulk inclusion of imperial + metric units, as well as all liquids + all solids
+# For input validation AND conditional statement branching
 
 imperial_units = imperial_liquids + imperial_solids
 
